@@ -5,7 +5,7 @@ import path from 'path';
 import { promisify } from 'util';
 import execa from 'execa';
 import Listr from 'listr';
-import { projectInstall} from 'pkg-install'
+import { install } from 'pkg-install'
 
 const access = promisify(fs.access);
 const copy = promisify(ncp);
@@ -24,7 +24,6 @@ async function initGit(options) {
   if (result.failed) {
     return Promise.reject(new Error('Failed to initialize Git'));
   }
-  return;
 }
 
 export async function createProject(options) {
@@ -61,8 +60,8 @@ export async function createProject(options) {
     },
     {
       title: 'Install dependencies',
-      task: () => projectInstall({
-        cwd: options.targetDirectory
+      task: () => install({
+        'eslint-config-ping': 'git+https://github.com/JinpingMa/style-guide.git#eslint'
       }),
       skip: () => !options.runInstall ? 'Pass --install to automatically install derictory' : undefined
     }

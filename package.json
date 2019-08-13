@@ -1,11 +1,11 @@
 {
-  "name": "@pingcloud/create-project",
+  "name": "@pingcloud/config-lint-cli",
   "version": "1.0.0",
-  "description": "A CLI to bootstrap my projects",
+  "description": "A CLI to config lint for my projects",
   "main": "src/index.js",
   "bin": {
-    "@pingcloud/create-project": "bin/create-project",
-    "create-project": "bin/create-project"
+    "@pingcloud/config-lint-cli": "bin/config-lint-cli",
+    "config-lint-cli": "bin/config-lint-cli"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,7 +15,7 @@
   },
   "keywords": [
     "cli",
-    "create-project"
+    "config-lint"
   ],
   "author": "",
   "license": "MIT",
