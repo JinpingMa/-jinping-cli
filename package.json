@@ -17,7 +17,10 @@
     "cli",
     "config-lint"
   ],
-  "author": "",
+  "author": "Ma Jinping",
+  "engines": {
+    "node": ">=6.0.0"
+  },
   "license": "MIT",
   "dependencies": {
     "arg": "^4.1.1",
