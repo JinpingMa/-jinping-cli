@@ -1,75 +1,47 @@
-import chalk from 'chalk';
-import fs from 'fs';
-import ncp from 'ncp';
-import path from 'path';
-import { promisify } from 'util';
-import execa from 'execa';
-import Listr from 'listr';
+import chalk from 'chalk'
+import fs from 'fs'
+import ncp from 'ncp'
+import { promisify } from 'util'
+import Listr from 'listr'
 import { install } from 'pkg-install'
 
-const access = promisify(fs.access);
-const copy = promisify(ncp);
+const access = promisify(fs.access)
+const copy = promisify(ncp)
 
-async function copyTemplateFiles(options) {
-  return copy(options.templateDirectory, options.targetDirectory, {
-    clobber: false
-  });
-}
-
-async function initGit(options) {
-  const result = await execa('git', ['init'], {
-    cwd: options.targetDirectory
-  });
-
-  if (result.failed) {
-    return Promise.reject(new Error('Failed to initialize Git'));
-  }
-}
-
-export async function createProject(options) {
+export async function createProject (options) {
   options = {
     ...options,
     targetDirectory: options.targetDirectory || process.cwd()
-  };
-
-
-  const currentFileUrl = import.meta.url;
-  const templateDir = path.resolve(
-    new URL(currentFileUrl).pathname,
-    '../../templates',
-    options.template.toLowerCase()
-  );
-  options.templateDirectory = templateDir
-
-  try {
-    await access(templateDir, fs.constants.R_OK);
-  } catch(err) {
-    console.error('%s Invalid template name', chalk.red.bold('ERROR'));
-    process.exit(1);
   }
+  const lintGitRepository = {
+    stylelint: {
+      name: 'stylelint-config-ping',
+      git: 'git+https://github.com/JinpingMa/style-guide.git#stylelint'
+    },
+    eslint: {
+      name: 'eslint-config-ping',
+      git: 'git+https://github.com/JinpingMa/style-guide.git#eslint'
+    }
+  }
+
+  const installPkgArr = {}
+  options.lintFileArr.forEach(item => {
+    const lintFileObj = lintGitRepository[item]
+    if (lintFileObj) {
+      installPkgArr[lintFileObj['name']] = lintFileObj['git']
+    }
+  })
 
   const tasks = new Listr([
     {
-      title: 'Copy project files',
-      task: () => copyTemplateFiles(options)
-    },
-    {
-      title: 'Initialize git',
-      task: () => initGit(options),
-      enabled: () => options.git
-    },
-    {
       title: 'Install dependencies',
-      task: () => install({
-        'eslint-config-ping': 'git+https://github.com/JinpingMa/style-guide.git#eslint'
-      }),
-      skip: () => !options.runInstall ? 'Pass --install to automatically install derictory' : undefined
+      task: () => install(installPkgArr)
     }
   ])
 
-  await tasks.run();
+  await tasks.run()
 
-  console.log('%s Project ready', chalk.green.bold('DONE'));
-  return true;
+  console.log('%s Project ready', chalk.green.bold('DONE'))
+  return true
 
 }

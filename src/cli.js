@@ -5,81 +5,43 @@ import { createProject } from  './main'
 function parseArgumentsIntoOptions(rawArgs) {
   const args = arg(
     {
-      '--git': Boolean,
-      '--yes': Boolean,
-      '--install': Boolean,
-      '-g': '--git',
-      '-y': '--yes',
-      '-i': '--install'
+      '--all': Boolean,
+      '-a': '--all'
     },
     {
       argv: rawArgs.slice(2),
     }
   );
   return {
-    skipPrompts: args['--yes'] || false,
-    git: args['--git'] || false,
-    template: args._[0],
-    runInstall: args['--install'] || false
+    lintFileArr: args._[0],
+    runInstallAll: args['--all'] || false
   }
 }
 
 async function promptForMissingOptions(options) {
-  const defaultTemplate = 'eslint';
-  if(options.skipPrompts) {
+  const defaultLintFileArr = [];
+  if(options.runInstallAll) {
     return {
       ...options,
-      template: options.template || defaultTemplate
+      lintFileArr: ['eslint', 'stylelint']
     };
   }
 
-  // const prompt = new MultiSelect({
-  //   name: 'alphabet',
-  //   message: 'Favorite color?',
-  //   choices: ['Blue', 'Green', 'Orange', 'Red', 'Violet'],
-  //   maxSelected: 3,
-  //   format() {
-  //     let n = this.maxSelected - this.selected.length;
-  //     let s = (n === 0 || n > 1) ? 's' : '';
-  //     return `You may select ${n} more choice${s}`;
-  //   }
-  // });
-  // let answers = {
-  //   template: '',
-  //   git: ''
-  // }
-  //
-  // prompt.run()
-  //   .then(answer => { answers = answer; console.log('Answer:', answer)})
-  //   .catch(console.error);
-
-
   const questions = [];
-  if (!options.template) {
+  if (!options.lintFileArr) {
     questions.push({
       type: 'checkbox',
-      name: 'template',
+      name: 'lintFileArr',
       message: 'Please choose which lint to use',
       choices: ['eslint', 'stylelint'],
-      default: defaultTemplate
+      default: defaultLintFileArr
     })
   }
 
-  // if (!options.git) {
-  //   questions.push({
-  //     type: 'confirm',
-  //     name: 'git',
-  //     message: 'Initialize a git repository?',
-  //     default: false
-  //   })
-  // }
-
   const answers = await inquirer.prompt(questions);
-  console.log(answers, 'answers');
   return {
     ...options,
-    template: options.template || answers.template,
-    git: options.git || answers.git
+    lintFileArr: options.lintFileArr || answers.lintFileArr
   }
 
 }
@@ -87,5 +49,5 @@ async function promptForMissingOptions(options) {
 export async function cli(args) {
   let options = parseArgumentsIntoOptions(args);
   options = await promptForMissingOptions(options);
-  // await createProject(options);
+  await createProject(options);
 }
