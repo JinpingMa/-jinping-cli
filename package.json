@@ -1,11 +1,11 @@
 {
-  "name": "@pingcloud/config-lint-cli",
+  "name": "@pingcloud/install-lint-config",
   "version": "1.0.0",
-  "description": "A CLI to config lint for my projects",
+  "description": "A CLI to install lint shareable configs for my projects",
   "main": "src/index.js",
   "bin": {
-    "@pingcloud/config-lint-cli": "bin/config-lint-cli",
-    "config-lint-cli": "bin/config-lint-cli"
+    "@pingcloud/install-lint-config": "bin/install-lint-config",
+    "install-lint-config": "bin/install-lint-config"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
