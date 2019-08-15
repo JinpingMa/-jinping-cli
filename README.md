@@ -4,9 +4,14 @@
 
 ## 使用
 
-* 在命令行执行
+* 不安装使用
 ```
-  npx git+https://github.com/JinpingMa/install-lint-config.git
+  > npx git+https://github.com/JinpingMa/install-lint-config.git
+```
+* 安装使用
+```
+  > npm install git+https://github.com/JinpingMa/install-lint-config.git
+  > install-lint-config
 ```
 * 选择要安装的lint文件，可多选。
 
