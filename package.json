@@ -1,10 +1,9 @@
 {
-  "name": "@pingcloud/install-lint-config",
+  "name": "install-lint-config",
   "version": "1.0.0",
   "description": "A CLI to install lint shareable configs for my projects",
   "main": "src/index.js",
   "bin": {
-    "@pingcloud/install-lint-config": "bin/install-lint-config",
     "install-lint-config": "bin/install-lint-config"
   },
   "scripts": {
