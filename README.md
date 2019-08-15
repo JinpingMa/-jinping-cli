@@ -10,7 +10,7 @@
 ```
 * 安装使用
 ```
-  > npm install git+https://github.com/JinpingMa/install-lint-config.git
+  > npm install --save-dev git+https://github.com/JinpingMa/install-lint-config.git
   > install-lint-config
 ```
 * 选择要安装的lint文件，可多选。
